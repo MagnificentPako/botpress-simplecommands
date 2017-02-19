@@ -4,7 +4,7 @@ botpress install simplecommands
 ```
 
 # Usage
-```
+```js
 bp.addCommand("help", "discord", (event, next, args) => {
   bp.discord.sendText(event.channel.id, "There's no help available right now.")
 })
