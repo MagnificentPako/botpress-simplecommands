@@ -8,6 +8,10 @@
     "menuIcon": "view_module",
     "webBundle": "bin/web.bundle.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:TheFreakLord/botpress-simplecommands.git"
+  },
   "scripts": {
     "test": "standard src/* --verbose | snazzy",
     "watch": "node webpack.js --watch",
