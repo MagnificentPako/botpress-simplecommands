@@ -4,8 +4,7 @@ var config = null
 var commands = {}
 
 const incomingMiddleware = (event, next) => {
-  if (event.type !== 'message' && event.type !== 'text') {
-    console.log('wai')
+  if (config.listenFor.get().indexOf(event.type) === -1 && config.listenFor.get().indexOf('universal') === -1) {
     return next()
   }
 
@@ -14,12 +13,18 @@ const incomingMiddleware = (event, next) => {
     return next()
   }
   const msg = rawmsg.slice(config.prefix.get().length)
+  const platform = (config.listenFor.get().indexOf('universal') === -1) ? event.platform : 'universal'
   const cmd = msg.split(' ')[0]
   const args = msg.split(' ').slice(1)
-  if (commands[cmd] === null) {
+  if (!commands[cmd]) {
     return next()
   }
-  commands[cmd](event, next, args)
+
+  if (!commands[cmd].handlers[platform]) {
+    return next()
+  }
+
+  commands[cmd].handlers[platform](event, next, args)
 }
 
 module.exports = {
@@ -32,8 +37,16 @@ module.exports = {
       module: 'botpress-simplecommands',
       description: 'Parses commands and stuff.'
     })
-    bp.addCommand = (name, handler) => {
-      commands[name] = handler
+    bp.addCommand = (name, platform, handler) => {
+      if (!commands[name]) {
+        commands[name] = {
+          handlers: {
+            [platform]: handler
+          }
+        }
+      } else {
+        commands[name].handlers[platform] = handler
+      }
     }
   },
 

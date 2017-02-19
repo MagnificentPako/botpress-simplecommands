@@ -3,11 +3,12 @@ import createStorage from './storage'
 
 export default bp => {
   const configKeys = [
-    'prefix'
+    'prefix', 'listenFor'
   ]
 
   const configDefaults = {
-    prefix: '!'
+    prefix: '!',
+    listenFor: ['message', 'text']
   }
 
   const configStorage = createStorage(bp, configDefaults)
