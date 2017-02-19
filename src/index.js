@@ -4,6 +4,7 @@ let config = null
 
 module.exports = {
   init: function (bp) {
+    console.log(config)
   },
 
   ready: function (bp) {
